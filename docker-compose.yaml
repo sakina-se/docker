@@ -1,0 +1,15 @@
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80" # Mahalliy mashinaning 8080-portini konteynerning 80-portiga bog'laydi
+    volumes:
+      - ./public:/var/www/html/public # Mahalliy 'public' papkasini konteyner ichidagi 'public' papkasi bilan bog'laydi
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf # Mahalliy 'nginx.conf' faylini konteynerdagi default konfiguratsiya fayliga bog'laydi
+    depends_on:
+      - php-fpm # Nginx php-fpm'ni ishga tushirganidan keyin ishlaydi
+
+  php-fpm:
+    build: .
+    volumes:
+      - ./public:/var/www/html/public # PHP-FPM ham Nginx bilan bir xil fayllarni ishlaydi
